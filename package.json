@@ -1,0 +1,36 @@
+{
+  "name": "http-services",
+  "version": "1.0.0",
+  "description": "A set of tools for the http service ...",
+  "main": "index.js",
+  "scripts": {
+    "test": "nyc --report-dir=\"coverage/src\" mocha --reporter spec --bail --check-leaks test/{,**/}*.test.js",
+    "test-ci": "nyc --report-dir=\"coverage/src\" mocha --reporter spec --check-leaks test/{,**/}*.test.js",
+    "report-coverage": "nyc report --reporter=lcov > coverage.lcov && codecov"
+  },
+  "keywords": [
+    "fetch",
+    "promise"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/thondery/http-services.git"
+  },
+  "author": "thondery <thondery@163.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/thondery/http-services/issues"
+  },
+  "homepage": "https://github.com/thondery/http-services#readme",
+  "dependencies": {
+    "isomorphic-fetch": "^2.2.1",
+    "lodash": "^4.17.4",
+    "query-string": "^4.3.2"
+  },
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "codecov": "^2.1.0",
+    "mocha": "^3.2.0",
+    "nyc": "^10.1.2"
+  }
+}
