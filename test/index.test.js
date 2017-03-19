@@ -1,5 +1,5 @@
 const chai = require('chai')
-const httpServices = require('../')
+const { httpServices, createAction, statusToError, getStatusError } = require('../')
 const server = require('./server')
 
 const should = chai.should()
@@ -118,8 +118,7 @@ describe('Test -> httpServices', () => {
   describe('\n    Method createAction \n', () => {
     it('should fail', done => {
       let error = new Error()
-      HttpServices = new httpServices()
-      let ret = HttpServices.createAction(FETCH_SIGNIN_FAILURE, error)
+      let ret = createAction(FETCH_SIGNIN_FAILURE, error)
       ret.should.be.an('object')
       ret.type.should.equal(FETCH_SIGNIN_FAILURE)
       ret.error.should.be.an('error')
@@ -136,8 +135,7 @@ describe('Test -> httpServices', () => {
           message: 'Request Success!'
         }
       }
-      HttpServices = new httpServices()
-      let ret = HttpServices.createAction(FETCH_SIGNIN_SUCCESS, Response)
+      let ret = createAction(FETCH_SIGNIN_SUCCESS, Response)
       ret.should.be.an('object')
       ret.type.should.equal(FETCH_SIGNIN_SUCCESS)
       ret.payload.should.be.an('object')
@@ -164,8 +162,7 @@ describe('Test -> httpServices', () => {
 
   describe('\n    Method getStatusError \n', () => {
     it('should success', done => {
-      HttpServices = new httpServices()
-      let ret = HttpServices.getStatusError({
+      let ret = getStatusError({
         status: 404, 
         statusText: 'Not Found'
       })
@@ -178,7 +175,6 @@ describe('Test -> httpServices', () => {
 
   describe('\n    Method statusToError \n', () => {
     it('should to error', done => {
-      HttpServices = new httpServices()
       let Response = {
         data: null,
         status: {
@@ -186,7 +182,7 @@ describe('Test -> httpServices', () => {
           message: 'Wraning Message!'
         }
       }
-      let ret = HttpServices.statusToError(Response, 'loginError')
+      let ret = statusToError(Response, 'loginError')
       ret.should.be.an('object')
       ret.loginError.should.be.an('object')
       ret.loginError.code.should.be.an('number')
@@ -194,7 +190,6 @@ describe('Test -> httpServices', () => {
       done()
     })
     it('should to error & message', done => {
-      HttpServices = new httpServices()
       let Response = {
         data: null,
         status: {
@@ -202,14 +197,13 @@ describe('Test -> httpServices', () => {
           message: 'Wraning Message!'
         }
       }
-      let ret = HttpServices.statusToError(Response, 'loginError', 'loginMessage')
+      let ret = statusToError(Response, 'loginError', 'loginMessage')
       ret.should.be.an('object')
       ret.loginError.should.be.an('number')
       ret.loginMessage.should.be.an('string')
       done()
     })
     it('should no error', done => {
-      HttpServices = new httpServices()
       let Response = {
         data: {},
         status: {
@@ -217,7 +211,7 @@ describe('Test -> httpServices', () => {
           message: 'Request Success!'
         }
       }
-      let ret = HttpServices.statusToError(Response, 'loginError')
+      let ret = statusToError(Response, 'loginError')
       ret.should.be.an('object')
       done()
     })

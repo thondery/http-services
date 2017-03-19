@@ -29,15 +29,10 @@
 npm install --save http-services
 ```
 
-## Introduced
-
-```javascript
-const httpServices = require('http-services')
-```
-
 ### SETTING
 
 ```javascript
+const { httpServices } = require('http-services')
 const HttpServices = new httpServices()
 
 // set domain
@@ -98,6 +93,8 @@ async () => {
 ### Other Method
 
 ```javascript
+const { createAction, statusToError, getStatusError } = require('http-services')
+
 // createAction
 
 const FETCH_SIGNIN_SUCCESS = 'FETCH_SIGNIN_SUCCESS'
@@ -112,7 +109,7 @@ const Response = {
     message: 'Request Success!'
   }
 }
-HttpServices.createAction(FETCH_SIGNIN_SUCCESS, Response)
+createAction(FETCH_SIGNIN_SUCCESS, Response)
 /*
 {
   type: 'FETCH_SIGNIN_SUCCESS',
@@ -129,7 +126,7 @@ HttpServices.createAction(FETCH_SIGNIN_SUCCESS, Response)
   error: null
 }
 */
-HttpServices.createAction(FETCH_SIGNIN_FAILURE, Response)
+createAction(FETCH_SIGNIN_FAILURE, Response)
 /*
 {
   type: 'FETCH_SIGNIN_FAILURE',
@@ -147,7 +144,7 @@ const Response = {
     message: 'Wraning Message!'
   }
 }
-HttpServices.statusToError(Response, 'loginError')
+statusToError(Response, 'loginError')
 /*
 {
   loginError: {
@@ -156,7 +153,7 @@ HttpServices.statusToError(Response, 'loginError')
   }
 }
 */
-HttpServices.statusToError(Response, 'loginError', 'loginMessage')
+statusToError(Response, 'loginError', 'loginMessage')
 /*
 {
   loginError: 1024,
@@ -174,7 +171,7 @@ const Error = {
   },
   ...
 }
-HttpServices.getStatusError(Error.response)
+getStatusError(Error.response)
 /*
 {
   code: 404,

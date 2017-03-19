@@ -2,7 +2,7 @@ require('isomorphic-fetch')
 const qs = require('query-string')
 const _ = require('lodash')
 
-module.exports = class httpServices {
+class httpServices {
 
   constructor (...opts) {
     opts = _.zipObject(['domain', 'apiPath', 'statusMessage'], opts)
@@ -53,29 +53,14 @@ module.exports = class httpServices {
     return `${domain}${apiPath}${url}`
   }
 
-  checkStatus (response) {
-    if (response.status >= 200 && response.status < 300) {
-      return response
-    }
-    else {
-      let error = new Error(response._bodyText)
-      error.response = response
-      throw error
-    }
-  }
-
-  parseJSON (response) {
-    return response.json()
-  }
-
   GET (url, params) {
     url = this.getAPI(url)
     if (params) {
       url += `?${qs.stringify(params)}`
     }
     return fetch(url)
-      .then(this.checkStatus)
-      .then(this.parseJSON)
+      .then(checkStatus)
+      .then(parseJSON)
   }
 
   POST (url, body) {
@@ -88,35 +73,52 @@ module.exports = class httpServices {
         },
         body: JSON.stringify(body)
       })
-      .then(this.checkStatus)
-      .then(this.parseJSON)
+      .then(checkStatus)
+      .then(parseJSON)
   }
+}
 
-  getStatusError (response) {
-    let { status, statusText } = response
-    return {
-      code: status,
-      message: statusText
-    }
-  }
+exports.httpServices = httpServices
 
-  statusToError (payload, error, message) {
-    let { status } = payload
-    let info = {}
-    info[error] = status.code > 0 ? status : null
-    if (message) {
-      info[error] = status.code
-      info[message] = status.message
-    }
-    return info
-  }
+exports.createAction = function (type, ret, opts = null) {
+  let isError = _.isError(ret)
+  return Object.assign({
+    type,
+    payload: isError ? null : ret,
+    error: isError ? ret : null,
+  }, opts)
+}
 
-  createAction (type, ret, opts = null) {
-    let isError = _.isError(ret)
-    return Object.assign({
-      type,
-      payload: isError ? null : ret,
-      error: isError ? ret : null,
-    }, opts)
+exports.getStatusError = function (response) {
+  let { status, statusText } = response
+  return {
+    code: status,
+    message: statusText
   }
+}
+
+exports.statusToError = function (payload, error, message) {
+  let { status } = payload
+  let info = {}
+  info[error] = status.code > 0 ? status : null
+  if (message) {
+    info[error] = status.code
+    info[message] = status.message
+  }
+  return info
+}
+
+function checkStatus (response) {
+  if (response.status >= 200 && response.status < 300) {
+    return response
+  }
+  else {
+    let error = new Error(response._bodyText)
+    error.response = response
+    throw error
+  }
+}
+
+function parseJSON (response) {
+  return response.json()
 }
