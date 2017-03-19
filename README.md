@@ -12,7 +12,7 @@
 
 [npm-image]: https://img.shields.io/npm/v/http-services.svg
 [npm-url]: https://www.npmjs.org/package/http-services
-[downloads-image]: https://img.shields.io/npm/dm/khttp-services.svg
+[downloads-image]: https://img.shields.io/npm/dm/http-services.svg
 [downloads-url]: https://npmjs.org/package/http-services
 [travis-image]: https://travis-ci.org/thondery/http-services.svg?branch=master
 [travis-url]: https://travis-ci.org/thondery/http-services
