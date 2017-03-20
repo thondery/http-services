@@ -89,11 +89,18 @@ exports.createAction = function (type, ret, opts = null) {
   }, opts)
 }
 
-exports.getStatusError = function (response) {
-  let { status, statusText } = response
+exports.getStatusError = function (error) {
+  let { code, message, response } = error
+  if (response) {
+    let { status, statusText } = response
+    return {
+      code: status,
+      message: statusText
+    }
+  }
   return {
-    code: status,
-    message: statusText
+    code: code || 1000,
+    message: message || 'Abnormal error'
   }
 }
 

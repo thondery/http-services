@@ -161,11 +161,26 @@ describe('Test -> httpServices', () => {
   })
 
   describe('\n    Method getStatusError \n', () => {
-    it('should success', done => {
-      let ret = getStatusError({
-        status: 404, 
-        statusText: 'Not Found'
-      })
+    it('should empty error', done => {
+      let error = new Error()
+      let ret = getStatusError(error)
+      ret.should.be.an('object')
+      ret.code.should.be.an('number')
+      ret.message.should.be.an('string')
+      done()
+    })
+    it('should message error', done => {
+      let error = new Error('Unexpected token < in JSON at position 0')
+      let ret = getStatusError(error)
+      ret.should.be.an('object')
+      ret.code.should.be.an('number')
+      ret.message.should.be.an('string')
+      done()
+    })
+    it('should response error', done => {
+      let error = new Error()
+      error.response = { status: 404, statusText: 'Not Found' }
+      let ret = getStatusError(error)
       ret.should.be.an('object')
       ret.code.should.be.an('number')
       ret.message.should.be.an('string')

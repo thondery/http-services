@@ -163,15 +163,25 @@ statusToError(Response, 'loginError', 'loginMessage')
 
 // getStatusError
 
-const Error = {
-  response: {
-    status: 404,
-    statusText: 'Not Found',
-    ...
-  },
-  ...
+const error = new Error()
+getStatusError(error)
+/*
+{
+  code: 1000,
+  message: 'Abnormal error'
 }
-getStatusError(Error.response)
+*/
+const error = new Error('Unexpected token < in JSON at position 0')
+getStatusError(error)
+/*
+{
+  code: 1000,
+  message: 'Unexpected token < in JSON at position 0'
+}
+*/
+const error = new Error()
+error.response = { status: 404, statusText: 'Not Found' }
+getStatusError(error)
 /*
 {
   code: 404,
