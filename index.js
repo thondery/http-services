@@ -115,6 +115,11 @@ exports.statusToError = function (payload, error, message) {
   return info
 }
 
+exports.createReducer = function rootReducer (state, action, handlers) {
+  const handler = handlers[action.type]
+  return handler ? handler(state, action) : state
+}
+
 function checkStatus (response) {
   if (response.status >= 200 && response.status < 300) {
     return response

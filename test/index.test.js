@@ -1,5 +1,11 @@
 const chai = require('chai')
-const { httpServices, createAction, statusToError, getStatusError } = require('../')
+const { 
+  httpServices, 
+  createAction, 
+  createReducer,
+  statusToError, 
+  getStatusError 
+} = require('../')
 const server = require('./server')
 
 const should = chai.should()
@@ -9,6 +15,7 @@ describe('Test -> httpServices', () => {
   var HttpServices
   const FETCH_SIGNIN_SUCCESS = 'FETCH_SIGNIN_SUCCESS'
   const FETCH_SIGNIN_FAILURE = 'FETCH_SIGNIN_FAILURE'
+  const ROOT_INITIAL_SUCCESS = 'ROOT_INITIAL_SUCCESS'
 
   before( done => {
     server.listen(14001)
@@ -145,6 +152,24 @@ describe('Test -> httpServices', () => {
       ret.payload.status.should.be.an('object')
       ret.payload.status.code.should.equal(0)
       ret.payload.status.message.should.equal('Request Success!')
+      done()
+    })
+  })
+
+  describe('\n    Method createReducer \n', () => {
+    it('should success', done => {
+      const initialState = {
+        initial: false
+      }
+      const action = createAction(ROOT_INITIAL_SUCCESS, null)
+      const handlers = {
+        [ROOT_INITIAL_SUCCESS]: function (state, action) {
+          return Object.assign(state, { initial: true })
+        }
+      }
+      const reducer = createReducer(initialState, action, handlers)
+      reducer.should.be.an('object')
+      reducer.should.be.ok
       done()
     })
   })

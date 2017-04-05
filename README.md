@@ -93,7 +93,7 @@ async () => {
 ### Other Method
 
 ```javascript
-const { createAction, statusToError, getStatusError } = require('http-services')
+const { createAction, createReducer, statusToError, getStatusError } = require('http-services')
 
 // createAction
 
@@ -132,6 +132,25 @@ createAction(FETCH_SIGNIN_FAILURE, Response)
   type: 'FETCH_SIGNIN_FAILURE',
   payload: null,
   error: Error
+}
+*/
+
+// createReducer
+
+const ROOT_INITIAL_SUCCESS = 'ROOT_INITIAL_SUCCESS'
+const initialState = {
+  initial: false
+}
+const action = createAction(ROOT_INITIAL_SUCCESS, null)
+const handlers = {
+  [ROOT_INITIAL_SUCCESS]: function (state, action) {
+    return Object.assign(state, { initial: true })
+  }
+}
+createReducer(state, action, handlers)
+/*
+{
+  initial: true
 }
 */
 
