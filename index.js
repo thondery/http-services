@@ -1,6 +1,11 @@
-!fetch && require('isomorphic-fetch')
 const qs = require('query-string')
 const _ = require('lodash')
+try {
+  fetch
+} catch (error) {
+  require('isomorphic-fetch')
+}
+
 
 class httpServices {
 
