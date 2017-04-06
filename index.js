@@ -1,4 +1,4 @@
-require('isomorphic-fetch')
+!fetch && require('isomorphic-fetch')
 const qs = require('query-string')
 const _ = require('lodash')
 
