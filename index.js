@@ -45,11 +45,9 @@ var httpServices = exports.httpServices = function () {
     key: 'GET',
     value: function GET(url, params) {
       url = this.getAPI(url)
-      console.log(this.getAPI(url), '99r3')
       if (params) {
         url += `?${qs.stringify(params)}`
       }
-      console.log(url)
       return fetch(url).then(checkStatus).then(parseJSON)
     }
   }, {
