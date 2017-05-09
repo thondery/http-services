@@ -1,6 +1,6 @@
 {
   "name": "http-services",
-  "version": "1.2.3",
+  "version": "1.2.4",
   "description": "A set of tools for the http service ...",
   "main": "index.js",
   "scripts": {
