@@ -1,6 +1,6 @@
 {
   "name": "http-services",
-  "version": "1.2.2",
+  "version": "1.2.3",
   "description": "A set of tools for the http service ...",
   "main": "index.js",
   "scripts": {
@@ -28,11 +28,6 @@
     "query-string": "^4.3.2"
   },
   "devDependencies": {
-    "babel-core": "^6.24.1",
-    "babel-plugin-transform-runtime": "^6.23.0",
-    "babel-polyfill": "^6.23.0",
-    "babel-preset-es2015": "^6.24.1",
-    "babel-preset-stage-0": "^6.24.1",
     "chai": "^3.5.0",
     "codecov": "^2.1.0",
     "mocha": "^3.2.0",

@@ -1,17 +1,31 @@
-require('babel-core/register')
-require('babel-polyfill')
-const qs = require('query-string')
-const _ = require('lodash')
-try {
-  fetch
-} catch (error) {
-  require('isomorphic-fetch')
-}
+var qs = require('query-string')
+var _ = require('lodash')
+var fetch = require('isomorphic-fetch')
 
-export class httpServices {
+var createClass = function () {
 
-  constructor (...opts) {
-    opts = _.zipObject(['domain', 'apiPath', 'statusMessage'], opts)
+  function defineProperties(target, props) { 
+    for (var i = 0; i < props.length; i++) { 
+      var descriptor = props[i]
+      descriptor.enumerable = descriptor.enumerable || false
+      descriptor.configurable = true
+      if ("value" in descriptor) descriptor.writable = true
+      Object.defineProperty(target, descriptor.key, descriptor)
+    } 
+  }
+
+  return function (Constructor, protoProps, staticProps) { 
+    if (protoProps) defineProperties(Constructor.prototype, protoProps)
+    if (staticProps) defineProperties(Constructor, staticProps)
+    return Constructor
+  }
+
+}()
+
+var httpServices = exports.httpServices = function () {
+
+  function httpServices() {
+    var opts = _.zipObject(['domain', 'apiPath', 'statusMessage'], arguments)
     this.state = {
       domain: opts.domain || '',
       apiPath: opts.apiPath || '',
@@ -19,73 +33,83 @@ export class httpServices {
     }
   }
 
-  get options () {
-    return this.state
-  }
-
-  set domain (val) {
-    this.state.domain = val
-  }
-
-  get domain () {
-    return this.state.domain
-  }
-
-  set apiPath (val) {
-    this.state.apiPath = val
-  }
-
-  get apiPath () {
-    return this.state.apiPath
-  }
-
-  set statusMessage (val) {
-    this.state.statusMessage = val
-  }
-
-  get statusMessage () {
-    return this.state.statusMessage
-  }
-
-  get defaultStatus () {
-    return {
-      code: 0,
-      message: this.state.statusMessage
+  createClass(httpServices, [{
+    key: 'getAPI',
+    value: function getAPI(url) {
+      var _options = this.options,
+          domain = _options.domain,
+          apiPath = _options.apiPath
+      return '' + domain + apiPath + url
     }
-  }
-
-  getAPI (url) {
-    let { domain, apiPath } = this.options
-    return `${domain}${apiPath}${url}`
-  }
-
-  GET (url, params) {
-    url = this.getAPI(url)
-    if (params) {
-      url += `?${qs.stringify(params)}`
+  }, {
+    key: 'GET',
+    value: function GET(url, params) {
+      url = this.getAPI(url)
+      console.log(this.getAPI(url), '99r3')
+      if (params) {
+        url += `?${qs.stringify(params)}`
+      }
+      console.log(url)
+      return fetch(url).then(checkStatus).then(parseJSON)
     }
-    return fetch(url)
-      .then(checkStatus)
-      .then(parseJSON)
-  }
-
-  POST (url, body) {
-    url = this.getAPI(url)
-    return fetch(url, {
+  }, {
+    key: 'POST',
+    value: function POST(url, body) {
+      url = this.getAPI(url)
+      return fetch(url, {
         method: 'POST',
         headers: {
           'Accept': 'application/json',
           'Content-Type': 'application/json'
         },
         body: JSON.stringify(body)
-      })
-      .then(checkStatus)
-      .then(parseJSON)
-  }
-}
+      }).then(checkStatus).then(parseJSON)
+    }
+  }, {
+    key: 'options',
+    get: function get() {
+      return this.state
+    }
+  }, {
+    key: 'domain',
+    set: function set(val) {
+      this.state.domain = val
+    },
+    get: function get() {
+      return this.state.domain
+    }
+  }, {
+    key: 'apiPath',
+    set: function set(val) {
+      this.state.apiPath = val
+    },
+    get: function get() {
+      return this.state.apiPath
+    }
+  }, {
+    key: 'statusMessage',
+    set: function set(val) {
+      this.state.statusMessage = val
+    },
+    get: function get() {
+      return this.state.statusMessage
+    }
+  }, {
+    key: 'defaultStatus',
+    get: function get() {
+      return {
+        code: 0,
+        message: this.state.statusMessage
+      }
+    }
+  }])
 
-export const createAction = (type, ret, opts = null) => {
-  const isError = _.isError(ret)
+  return httpServices
+}()
+
+exports.createAction = function (type, ret) {
+  var opts = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : null
+  var isError = _.isError(ret)
   return Object.assign({
     type,
     payload: isError ? null : ret,
@@ -93,10 +117,13 @@ export const createAction = (type, ret, opts = null) => {
   }, opts)
 }
 
-export const getStatusError = (error) => {
-  const { code, message, response } = error
+exports.getStatusError = function (error) {
+  var code = error.code,
+      message = error.message,
+      response = error.response
   if (response) {
-    const { status, statusText } = response
+    var status = response.status,
+        statusText = response.statusText
     return {
       code: status,
       message: statusText
@@ -108,9 +135,9 @@ export const getStatusError = (error) => {
   }
 }
 
-export const statusToError = (payload, error, message) => {
-  const { status } = payload
-  const info = {}
+exports.statusToError = function (payload, error, message) {
+  var status = payload.status
+  var info = {}
   info[error] = status.code > 0 ? status : null
   if (message) {
     info[error] = status.code
@@ -119,8 +146,8 @@ export const statusToError = (payload, error, message) => {
   return info
 }
 
-export const createReducer = (state, action, handlers) => {
-  const handler = handlers[action.type]
+exports.createReducer = function (state, action, handlers) {
+  var handler = handlers[action.type]
   return handler ? handler(state, action) : state
 }
 
@@ -129,7 +156,7 @@ function checkStatus (response) {
     return response
   }
   else {
-    let error = new Error(response._bodyText)
+    var error = new Error(response._bodyText)
     error.response = response
     throw error
   }
