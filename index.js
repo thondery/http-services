@@ -1,3 +1,5 @@
+require('babel-core/register')
+require('babel-polyfill')
 const qs = require('query-string')
 const _ = require('lodash')
 try {
@@ -6,8 +8,7 @@ try {
   require('isomorphic-fetch')
 }
 
-
-class httpServices {
+export class httpServices {
 
   constructor (...opts) {
     opts = _.zipObject(['domain', 'apiPath', 'statusMessage'], opts)
@@ -83,10 +84,8 @@ class httpServices {
   }
 }
 
-exports.httpServices = httpServices
-
-exports.createAction = function (type, ret, opts = null) {
-  let isError = _.isError(ret)
+export const createAction = (type, ret, opts = null) => {
+  const isError = _.isError(ret)
   return Object.assign({
     type,
     payload: isError ? null : ret,
@@ -94,10 +93,10 @@ exports.createAction = function (type, ret, opts = null) {
   }, opts)
 }
 
-exports.getStatusError = function (error) {
-  let { code, message, response } = error
+export const getStatusError = (error) => {
+  const { code, message, response } = error
   if (response) {
-    let { status, statusText } = response
+    const { status, statusText } = response
     return {
       code: status,
       message: statusText
@@ -109,9 +108,9 @@ exports.getStatusError = function (error) {
   }
 }
 
-exports.statusToError = function (payload, error, message) {
-  let { status } = payload
-  let info = {}
+export const statusToError = (payload, error, message) => {
+  const { status } = payload
+  const info = {}
   info[error] = status.code > 0 ? status : null
   if (message) {
     info[error] = status.code
@@ -120,7 +119,7 @@ exports.statusToError = function (payload, error, message) {
   return info
 }
 
-exports.createReducer = function rootReducer (state, action, handlers) {
+export const createReducer = (state, action, handlers) => {
   const handler = handlers[action.type]
   return handler ? handler(state, action) : state
 }
