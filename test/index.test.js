@@ -5,7 +5,7 @@ const {
   createReducer,
   statusToError, 
   getStatusError 
-} = require('../')
+} = require('../lib')
 const server = require('./server')
 
 const should = chai.should()
