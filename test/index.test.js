@@ -59,7 +59,7 @@ describe('Test -> httpServices', () => {
     })
     it('should fail 500 Server Error', done => {
       HttpServices = new httpServices('http://localhost:14001', '/api/v1')
-      HttpServices.GET('/user', { key: 'info' })
+      HttpServices.GET('/user', { key: 'info' }, { Authorization: '1234567890' })
         .catch( error => {
           error.should.be.an('error')
           error.response.status.should.equal(500)
@@ -68,7 +68,7 @@ describe('Test -> httpServices', () => {
     })
     it('should success', done => {
       HttpServices = new httpServices('http://localhost:14001', '/api/v1')
-      HttpServices.GET('/user')
+      HttpServices.GET('/user', null, { Authorization: '1234567890' })
         .then( ret => {
           ret.should.be.an('object')
           ret.data.should.be.an('object')
@@ -86,9 +86,9 @@ describe('Test -> httpServices', () => {
     it('should fail', done => {
       HttpServices = new httpServices('http://localhost:14001', '/api/v1')
       HttpServices.POST('/sign-in', {
-        username: 'admin',
-        password: 'password'
-      })
+          username: 'admin',
+          password: 'password'
+        })
         .then( ret => {
           ret.should.be.an('object')
           ret.status.should.be.an('object')
@@ -105,7 +105,7 @@ describe('Test -> httpServices', () => {
       HttpServices.POST('/sign-in', {
         username: 'admin',
         password: 'password'
-      })
+      }, { Authorization: '1234567890' })
         .then( ret => {
           ret.should.be.an('object')
           ret.data.should.be.an('object')

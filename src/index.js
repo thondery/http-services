@@ -58,23 +58,24 @@ export class httpServices {
     return `${domain}${apiPath}${url}`
   }
 
-  GET (url, params) {
+  GET (url, params, headers = {}) {
     url = this.getAPI(url)
     if (params) {
       url += `?${qs.stringify(params)}`
     }
-    return fetch(url)
+    return fetch(url, { headers })
       .then(checkStatus)
       .then(parseJSON)
   }
 
-  POST (url, body) {
+  POST (url, body, headers = {}) {
     url = this.getAPI(url)
     return fetch(url, {
         method: 'POST',
         headers: {
           'Accept': 'application/json',
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
+          ...headers
         },
         body: JSON.stringify(body)
       })
