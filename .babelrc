@@ -1,9 +1,17 @@
 {
   "presets": [
-    "es2015",
+    ["env", {
+      "modules": false,
+      "targets": {
+        "ie9": true
+      },
+      "uglify": true
+    }],
     "stage-0"
   ],
   "plugins": [
-    "transform-runtime"
+    "transform-es2015-modules-commonjs",
+    "transform-decorators-legacy",
+    "lodash"
   ]
 }

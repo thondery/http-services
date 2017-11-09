@@ -1,6 +1,11 @@
-const qs = require('query-string')
-const _ = require('lodash')
-const fetch = require('isomorphic-fetch')
+import qs from 'query-string'
+import _ from 'lodash'
+
+try {
+  fetch
+} catch (error) {
+  require('isomorphic-fetch')
+}
 
 export class httpServices {
 
