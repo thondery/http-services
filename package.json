@@ -1,10 +1,10 @@
 {
   "name": "http-services",
-  "version": "1.2.7",
+  "version": "1.2.8",
   "description": "A set of tools for the http service ...",
   "main": "lib/index.js",
   "scripts": {
-    "build": "babel src -d lib",
+    "build": "babel node_modules/http-services-core/index.js -o lib/index.js",
     "test": "nyc --report-dir=\"coverage/src\" mocha --reporter spec --bail --check-leaks test/{,**/}*.test.js",
     "test-ci": "nyc --report-dir=\"coverage/src\" mocha --reporter spec --check-leaks test/{,**/}*.test.js",
     "report-coverage": "nyc report --reporter=lcov > coverage.lcov && codecov"
@@ -24,8 +24,7 @@
   },
   "homepage": "https://github.com/thondery/http-services#readme",
   "dependencies": {
-    "isomorphic-fetch": "^2.2.1",
-    "query-string": "^5.0.1"
+    "http-services-core": "^1.0.0"
   },
   "devDependencies": {
     "babel-core": "^6.26.0",
