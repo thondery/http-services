@@ -217,7 +217,7 @@ describe('Test -> httpServices', () => {
     it('should to error', done => {
       let Response = {
         data: null,
-        status: {
+        Status: {
           code: 1024,
           message: 'Wraning Message!'
         }
@@ -232,7 +232,7 @@ describe('Test -> httpServices', () => {
     it('should to error & message', done => {
       let Response = {
         data: null,
-        status: {
+        Status: {
           code: 1024,
           message: 'Wraning Message!'
         }
@@ -246,7 +246,7 @@ describe('Test -> httpServices', () => {
     it('should no error', done => {
       let Response = {
         data: {},
-        status: {
+        Status: {
           code: 0,
           message: 'Request Success!'
         }

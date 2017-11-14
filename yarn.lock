@@ -1189,9 +1189,9 @@ hosted-git-info@^2.1.4:
   version "2.5.0"
   resolved "http://registry.npm.taobao.org/hosted-git-info/download/hosted-git-info-2.5.0.tgz#6d60e34b3abbc8313062c3b798ef8d901a07af3c"
 
-http-services-core@^1.0.0:
-  version "1.0.0"
-  resolved "http://registry.npm.taobao.org/http-services-core/download/http-services-core-1.0.0.tgz#129846942c73b247e467d39e0e01c31403ffc70a"
+http-services-core@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.npmjs.org/http-services-core/-/http-services-core-1.0.1.tgz#4677cf0ea759909e75fdc78258d6542f9176e4d8"
   dependencies:
     isomorphic-fetch "^2.2.1"
     query-string "^5.0.1"
